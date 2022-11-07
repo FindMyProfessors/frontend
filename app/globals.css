@@ -3,13 +3,6 @@
 @tailwind components;
 @tailwind utilities;
 
-body {
+* {
   font-family: "Inter";
 }
-
-/* .hero::after {
-  @apply absolute inset-0 -z-10;
-  content: "";
-  background-position: center;
-  background-size: cover;
-} */
