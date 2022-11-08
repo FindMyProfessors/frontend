@@ -3,7 +3,7 @@ import Link from "next/link";
 export const Navbar = () => {
   return (
     <div className="mx-auto flex h-16 w-full max-w-screen-xl items-center justify-between px-4">
-      <div className="text-xl tracking-wider">FMC</div>
+      <div className="text-xl tracking-wider">FMP</div>
       <div className="flex items-center">
         <Link href="/login">
           <button className="whitespace-nowrap rounded px-4 py-2">
