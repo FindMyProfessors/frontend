@@ -1,6 +1,5 @@
 import "app/globals.css";
-import { Footer } from "components/layout/Footer";
-import { Navbar } from "components/layout/Navbar";
+import { Navbar } from "./Navbar";
 import { inter } from "app/font";
 
 export default function RootLayout({
@@ -13,8 +12,7 @@ export default function RootLayout({
       <head></head>
       <body className="flex min-h-screen flex-col">
         <Navbar />
-        <div className="px-4">{children}</div>
-        <Footer />
+        <div className="mx-auto w-full max-w-screen-xl px-4">{children}</div>
       </body>
     </html>
   );
