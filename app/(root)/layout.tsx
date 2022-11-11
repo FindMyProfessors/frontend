@@ -12,7 +12,7 @@ export default function RootLayout({
       <head></head>
       <body className="flex min-h-screen flex-col">
         <Navbar />
-        <div className="mx-auto w-full max-w-screen-xl px-4">{children}</div>
+        <div className="mx-auto w-full max-w-screen-lg px-4">{children}</div>
       </body>
     </html>
   );

@@ -1,3 +1,13 @@
-export default function Courses({ params }: { params: { slug: string } }) {
-  return <div>{JSON.stringify(params)}</div>;
+import Table from "./Table";
+
+export default async function Courses({
+  params,
+}: {
+  params: { school: string; course: string };
+}) {
+  return (
+    <>
+      <Table data={[]} />
+    </>
+  );
 }
