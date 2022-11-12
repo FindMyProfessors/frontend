@@ -1,4 +1,6 @@
+import DebouncedInput from "./DebouncedInput";
 import Table from "./Table";
+import professors from "app/test/professors.json";
 
 export default async function Courses({
   params,
@@ -7,7 +9,7 @@ export default async function Courses({
 }) {
   return (
     <>
-      <Table data={[]} />
+      <Table data={professors} />
     </>
   );
 }

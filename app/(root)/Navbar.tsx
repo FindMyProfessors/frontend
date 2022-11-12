@@ -6,7 +6,7 @@ import { FormEvent } from "react";
 export const Navbar = () => {
   const path = usePathname();
   const router = useRouter();
-  
+
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -19,7 +19,9 @@ export const Navbar = () => {
 
   return (
     <div className="mx-auto flex h-16 w-full max-w-screen-lg items-center justify-between gap-4 px-4 text-sm">
-      <div className="text-xl tracking-wider">FMP</div>
+      <Link className="text-xl font-bold" href="/">
+        FMP
+      </Link>
       {path != "/" ? (
         <form onSubmit={handleSubmit} className="flex">
           <select

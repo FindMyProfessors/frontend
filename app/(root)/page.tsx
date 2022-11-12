@@ -29,7 +29,7 @@ const Home = () => {
       >
         <select
           name="school"
-          className="rounded-l border p-3 outline-none ring-blue-500 focus:z-10 focus:ring-2 "
+          className="rounded-l border p-3 outline-none ring-blue-500 focus:z-10 focus:ring-2"
         >
           <option value="ucf">UCF</option>
           <option value="uf">UF</option>
