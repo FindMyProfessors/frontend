@@ -7,12 +7,14 @@ export const columns = [
   columnHelper.accessor("firstName", {
     cell: (info) => info.getValue(),
     header: "First Name",
-    footer: "First Name",
   }),
   columnHelper.accessor("lastName", {
     cell: (info) => info.getValue(),
     header: "Last Name",
-    footer: "Last Name",
+  }),
+  columnHelper.accessor("averageRating", {
+    cell: (info) => info.getValue(),
+    header: "Average Rating",
   }),
 ];
 

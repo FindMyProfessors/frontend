@@ -7,6 +7,12 @@ export default function page({
   searchParams: { q: string };
   params: { school: string };
 }) {
+  /* 
+    {
+      title: "Intro to Discrete Structures"
+      courseCode: "cot3100"
+    }
+  */
   const courses = [
     "cot3100",
     "cda3103",

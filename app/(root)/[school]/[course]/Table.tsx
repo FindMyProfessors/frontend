@@ -1,6 +1,6 @@
 "use client";
-
-import React from "react";
+import "chart.js/auto";
+import React, { Fragment } from "react";
 import { columns } from "./columns";
 import { useState } from "react";
 import {
@@ -18,28 +18,43 @@ import {
   flexRender,
   getSortedRowModel,
   getPaginationRowModel,
+  ExpandedState,
+  getFilteredRowModel,
 } from "@tanstack/react-table";
+import { Line, Radar } from "react-chartjs-2";
+import DebouncedInput from "./DebouncedInput";
 
-export default function Table({ data }: { data: any }) {
+export default function Table({ data }: { data: any[] }) {
   const [sorting, setSorting] = useState<SortingState>([]);
+  const [expanded, setExpanded] = useState<ExpandedState>({});
+  const [globalFilter, setGlobalFilter] = useState("");
 
   const table = useReactTable({
     data,
     columns,
     state: {
       sorting,
+      expanded,
+      globalFilter,
     },
     onSortingChange: setSorting,
+    onExpandedChange: setExpanded,
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
-    debugTable: true,
+    getFilteredRowModel: getFilteredRowModel(),
   });
 
   return (
     <>
-      <div className="mt-20 overflow-auto rounded border">
-        <table className="w-full">
+      <DebouncedInput
+        className="mt-20 mb-2 rounded border px-4 py-2 outline-none ring-blue-500 focus:z-10 focus:ring-2"
+        value={globalFilter}
+        onChange={(value) => setGlobalFilter(value)}
+        placeholder="Search by all columns"
+      />
+      <div className="overflow-auto rounded border">
+        <table className="w-full table-fixed">
           <thead className="bg-black text-left text-xs uppercase text-white">
             {table.getHeaderGroups().map((headerGroup) => (
               <tr key={headerGroup.id}>
@@ -73,15 +88,127 @@ export default function Table({ data }: { data: any }) {
           </thead>
           <tbody>
             {table.getRowModel().rows.map((row) => (
-              <tr key={row.id} className="odd:bg-white even:bg-gray-100">
-                {row.getVisibleCells().map((cell) => (
-                  <td key={cell.id} className="px-8 py-4">
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                  </td>
+              <Fragment key={row.id}>
+                <tr
+                  onClick={() => row.toggleExpanded()}
+                  className="cursor-pointer border-b last:border-b-0 "
+                >
+                  {row.getVisibleCells().map((cell) => (
+                    <td key={cell.id} className="px-8 py-4">
+                      <div>{row.getIsExpanded()}</div>
+                      {flexRender(
+                        cell.column.columnDef.cell,
+                        cell.getContext()
+                      )}
+                    </td>
+                  ))}
+                </tr>
+                {row.getIsExpanded() ? (
+                  <tr className="border-b last:border-b-0">
+                    <td className="flex gap-6 p-6" colSpan={columns.length}>
+                      <div className="h-64 w-64">
+                        <Radar
+                          options={{
+                            plugins: {
+                              legend: {
+                                display: false,
+                              },
+                            },
+                            scales: {
+                              r: {
+                                ticks: {
+                                  display: false,
+                                },
+                              },
+                            },
+                          }}
+                          data={{
+                            labels: [
+                              "Eating",
+                              "Drinking",
+                              "Sleeping",
+                              "Designing",
+                              "Coding",
+                              "Cycling",
+                              "Running",
+                            ],
+                            datasets: [
+                              {
+                                data: [65, 59, 90, 81, 56, 55, 40],
+                                backgroundColor: "rgba(54, 162, 235, 0.2)",
+                                borderColor: "rgb(54, 162, 235)",
+                                pointBackgroundColor: "rgb(54, 162, 235)",
+                                pointBorderColor: "#fff",
+                                pointHoverBackgroundColor: "#fff",
+                                pointHoverBorderColor: "rgb(54, 162, 235)",
+                              },
+                            ],
+                          }}
+                        />
+                      </div>
+                      <div className="grid place-items-center">
+                        <Line
+                          data={{
+                            labels: [
+                              "January",
+                              "February",
+                              "March",
+                              "April",
+                              "May",
+                              "June",
+                              "July",
+                              "August",
+                              
+                            ],
+                            datasets: [
+                              {
+                                label: "Rating Over Time",
+                                data: [65, 59, 80, 81, 56, 55, 40],
+                                fill: false,
+                                borderColor: "rgb(75, 192, 192)",
+                                tension: 0.1,
+                              },
+                            ],
+                          }}
+                        />
+                      </div>
+                    </td>
+                  </tr>
+                ) : null}
+              </Fragment>
+            ))}
+          </tbody>
+          <tfoot className="bg-black text-left text-xs uppercase text-white">
+            {table.getHeaderGroups().map((headerGroup) => (
+              <tr key={headerGroup.id}>
+                {headerGroup.headers.map((header) => (
+                  <th
+                    key={header.id}
+                    colSpan={header.colSpan}
+                    onClick={header.column.getToggleSortingHandler()}
+                    className={`h-12 items-center px-8 ${
+                      header.column.getCanSort()
+                        ? "cursor-pointer select-none"
+                        : ""
+                    }`}
+                  >
+                    {header.isPlaceholder ? null : (
+                      <div className="flex items-center gap-2">
+                        {flexRender(
+                          header.column.columnDef.header,
+                          header.getContext()
+                        )}
+                        {{
+                          asc: <ChevronUpIcon className="h-6 w-6" />,
+                          desc: <ChevronDownIcon className="h-6 w-6" />,
+                        }[header.column.getIsSorted() as string] ?? null}
+                      </div>
+                    )}
+                  </th>
                 ))}
               </tr>
             ))}
-          </tbody>
+          </tfoot>
         </table>
       </div>
       <div className="mt-4 flex items-center gap-4">
