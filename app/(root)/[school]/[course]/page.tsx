@@ -1,5 +1,5 @@
-import DebouncedInput from "./DebouncedInput";
-import Table from "./Table";
+import DebouncedInput from "./components/DebouncedInput";
+import Table from "./components/Table";
 import professors from "app/test/professors.json";
 
 export default async function Courses({
