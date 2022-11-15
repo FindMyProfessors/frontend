@@ -44,7 +44,7 @@ export type Professor = {
   firstName: Scalars["String"];
   lastName: Scalars["String"];
   linked: Scalars["Boolean"];
-  rating: Rating;
+  rating: Partial<Rating> | null;
   analysis: ProfessorAnalysis;
   school: School;
   reviews: ReviewConnection;
