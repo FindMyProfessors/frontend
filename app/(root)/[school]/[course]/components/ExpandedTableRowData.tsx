@@ -17,20 +17,21 @@ const ExpandedTableRowData = ({
   }
 
   const tabLabels = professorAnalysis.tagAmount
-    .sort((a, b) => (a.amount < b.amount ? 1 : -1))
-    .map((t) => toTitleCase(t.tag));
+    .sort((a: any, b: any) => (a.amount < b.amount ? 1 : -1))
+    .map((t: any) => toTitleCase(t.tag));
 
   const tagData = professorAnalysis.tagAmount
-    .sort((a, b) => (a.amount < b.amount ? 1 : -1))
-    .map((t) => t.amount);
+    .sort((a: any, b: any) => (a.amount < b.amount ? 1 : -1))
+    .map((t: any) => t.amount);
 
   const ratingDates = professorAnalysis.averageRatingValues
-    .sort((a, b) => (a.year > b.year ? 1 : -1))
-    .map((r) => `${r.year} ${r.month}`);
+    .sort((a: any, b: any) => (a.year > b.year ? 1 : -1))
+    .map((r: any) => `${r.year} ${r.month}`);
 
   const ratingData = professorAnalysis.averageRatingValues
-    .sort((a, b) => (a.year > b.year ? 1 : -1))
-    .map((r) => r.value);
+    .sort((a: any, b: any) => (a.year > b.year ? 1 : -1))
+    .map((r: any) => r.value);
+
   return (
     <div className="flex flex-col items-center justify-around gap-8 sm:flex-row">
       <div>
