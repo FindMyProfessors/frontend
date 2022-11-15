@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "API_URL=http://localhost:8080 next dev",
+    "dev": "API_URL=http://localhost:8080/query next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
