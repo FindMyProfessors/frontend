@@ -9,7 +9,7 @@ const SearchCoursesInput = ({
   selectStyles,
   inputStyles,
 }: {
-  schools: { id: number; name: string }[];
+  schools?: { id: number; name: string }[];
   formStyles: string;
   selectStyles: string;
   inputStyles: string;
@@ -18,7 +18,7 @@ const SearchCoursesInput = ({
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    
+
     const { school, course } = Object.fromEntries(
       new FormData(e.target as HTMLFormElement)
     );
@@ -29,11 +29,7 @@ const SearchCoursesInput = ({
   return (
     <form onSubmit={handleSubmit} className={formStyles}>
       <select name="school" className={selectStyles}>
-        {schools.map((s) => (
-          <option key={s.id} value={s.id}>
-            {s.name.toUpperCase()}
-          </option>
-        ))}
+        <option value="1">UCF</option>
       </select>
       <input
         name="course"

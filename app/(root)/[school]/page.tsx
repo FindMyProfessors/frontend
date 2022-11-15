@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { gql, useQuery } from "@apollo/client";
 import { client } from "app/gql/client";
 import { GET_COURSES } from "app/gql/queries";
 import { Course } from "app/types";
@@ -8,10 +7,10 @@ export default async function CourseSearch({
   searchParams,
   params,
 }: {
-  searchParams: { q: string };
-  params: { school: string };
+  searchParams?: { q: string };
+  params?: { school: string };
 }) {
-  if (params.school.toLowerCase() != "1") {
+  if (params?.school.toLowerCase() != "1") {
     return <div>This school is not being supported</div>;
   }
 
@@ -23,7 +22,7 @@ export default async function CourseSearch({
         semester: "SPRING",
         year: 2023,
       },
-      searchQuery: searchParams.q?.toUpperCase(),
+      searchQuery: searchParams?.q?.toUpperCase(),
     },
   });
 
