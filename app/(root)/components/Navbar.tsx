@@ -1,21 +1,23 @@
-"use client";
+import { client } from "app/gql/client";
+import { GET_SCHOOLS } from "app/gql/queries";
+import { School } from "app/types";
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
-import { FormEvent } from "react";
+import { usePathname } from "next/navigation";
+import SearchCoursesInput from "./SearchCoursesInput";
 
-export const Navbar = () => {
+export const Navbar = async () => {
   const path = usePathname();
-  const router = useRouter();
+  const { data } = await client.query({ query: GET_SCHOOLS });
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
-    const { school, course } = Object.fromEntries(
-      new FormData(e.target as HTMLFormElement)
-    );
-
-    router.push(`/${school}?q=${course}`);
-  };
+  const schools = data.schools.schools.map((s: School) => ({
+    id: s.id,
+    name: s.name
+      .split(" ")
+      .filter((s) => s[0] != s[0].toLowerCase())
+      .map((s) => s[0]) // ["Univerity", "Central", "Florida"] => ["U", "C", "F"]
+      .join("") // "UCF"
+      .toLowerCase(), // "ucf"
+  }));
 
   return (
     <div className="mx-auto flex h-16 w-full max-w-screen-lg items-center justify-between gap-4 px-4 text-sm">
@@ -23,21 +25,12 @@ export const Navbar = () => {
         FMP
       </Link>
       {path != "/" ? (
-        <form onSubmit={handleSubmit} className="flex">
-          <select
-            name="school"
-            className="rounded-l  border-y border-l bg-gray-100 p-2 outline-none ring-blue-500  focus:z-10 focus:ring-2"
-          >
-            <option value="ucf">UCF</option>
-            <option value="uf">UF</option>
-          </select>
-          <input
-            name="course"
-            className="rounded-r border border-y border-r px-3 py-2 outline-none ring-blue-500 focus:z-10 focus:ring-2"
-            placeholder="Course name"
-            type="text"
-          />
-        </form>
+        <SearchCoursesInput
+          schools={schools}
+          formStyles="flex"
+          selectStyles="rounded-l  border-y border-l bg-gray-100 p-2 outline-none ring-blue-500  focus:z-10 focus:ring-2"
+          inputStyles="rounded-r border border-y border-r px-3 py-2 outline-none ring-blue-500 focus:z-10 focus:ring-2"
+        />
       ) : null}
       <div className="flex items-center">
         <Link

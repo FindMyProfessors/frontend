@@ -48,12 +48,12 @@ export default function Table({ data }: { data: any[] }) {
   return (
     <>
       <DebouncedInput
-        className="mt-20 rounded border px-4 py-2 outline-none ring-blue-500 focus:z-10 focus:ring-2"
+        className="mt-16 rounded border px-4 py-2 outline-none ring-blue-500 focus:z-10 focus:ring-2"
         value={globalFilter}
         onChange={(value) => setGlobalFilter(value)}
         placeholder="Search by all columns"
       />
-      <div className="my-2 flex items-center gap-4">
+      <div className="mb-2 mt-4 flex items-center gap-4">
         <div className="flex gap-2">
           <button
             className="rounded bg-black p-1 text-white"
@@ -116,18 +116,18 @@ export default function Table({ data }: { data: any[] }) {
           ))}
         </select>
       </div>
-      <div className="mb-6 overflow-auto rounded border shadow">
-        <table className="w-full table-fixed">
+      <div className="mb-20 overflow-auto rounded border shadow">
+        <table className="w-full">
           <thead className="bg-black text-left text-xs uppercase text-white">
             {table.getHeaderGroups().map((headerGroup) => (
               <tr key={headerGroup.id}>
-                <th className="h-12 w-12"></th>
+                <th className="w-12"></th>
                 {headerGroup.headers.map((header) => (
                   <th
                     key={header.id}
                     colSpan={header.colSpan}
                     onClick={header.column.getToggleSortingHandler()}
-                    className={`h-12 items-center px-4 ${
+                    className={`h-12 items-center px-4 py-2 ${
                       header.column.getCanSort()
                         ? "cursor-pointer select-none"
                         : ""
@@ -261,13 +261,13 @@ export default function Table({ data }: { data: any[] }) {
           <tfoot className="bg-black text-left text-xs uppercase text-white">
             {table.getHeaderGroups().map((headerGroup) => (
               <tr key={headerGroup.id}>
-                <th className=""></th>
+                <th className="w-12"></th>
                 {headerGroup.headers.map((header) => (
                   <th
                     key={header.id}
                     colSpan={header.colSpan}
                     onClick={header.column.getToggleSortingHandler()}
-                    className={`h-12 items-center px-4  ${
+                    className={`h-12 items-center px-4 py-2  ${
                       header.column.getCanSort()
                         ? "cursor-pointer select-none"
                         : ""

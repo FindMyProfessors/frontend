@@ -1,37 +1,46 @@
 import Link from "next/link";
+import { gql, useQuery } from "@apollo/client";
+import { client } from "app/gql/client";
+import { GET_COURSES } from "app/gql/queries";
+import { Course } from "app/types";
 
-export default function page({
+export default async function CourseSearch({
   searchParams,
   params,
 }: {
   searchParams: { q: string };
   params: { school: string };
 }) {
-  /* 
-    {
-      title: "Intro to Discrete Structures"
-      courseCode: "cot3100"
-    }
-  */
-  const courses = [
-    "cot3100",
-    "cda3103",
-    "cis3360",
-    "cop3502",
-    "sta4163",
-  ].filter((course) => course.startsWith(searchParams.q));
+  if (params.school.toLowerCase() != "1") {
+    return <div>This school is not being supported</div>;
+  }
+
+  const { data } = await client.query({
+    query: GET_COURSES,
+    variables: {
+      schoolId: "1",
+      input: {
+        semester: "SPRING",
+        year: 2023,
+      },
+      searchQuery: searchParams.q?.toUpperCase(),
+    },
+  });
+
+  let courses = data.school.courses.courses;
 
   return (
     <div>
       {courses.length ? (
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3">
-          {courses.map((course, i) => (
+          {courses.map((course: Course) => (
             <Link
-              className="rounded bg-gray-100 p-4 text-center"
-              key={i}
-              href={`${params.school}/${course}`}
+              className="rounded bg-gray-100 p-4"
+              key={course.id}
+              href={`${params.school}/${course.id}`}
             >
-              {course}
+              <div className="text-lg font-semibold">{course.name}</div>
+              <div className="text-sm">{course.code}</div>
             </Link>
           ))}
         </div>

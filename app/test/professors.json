@@ -33,5 +33,25 @@
     "firstName": "Vincent",
     "lastName": "Robles",
     "averageRating": "3.0"
+  },
+  {
+    "firstName": "Caleb",
+    "lastName": "Rivera",
+    "averageRating": "5.0"
+  },
+  {
+    "firstName": "Warren",
+    "lastName": "Snipes",
+    "averageRating": "5.0"
+  },
+  {
+    "firstName": "John",
+    "lastName": "Doe",
+    "averageRating": "2.0"
+  },
+  {
+    "firstName": "Gerald",
+    "lastName": "Hensel",
+    "averageRating": "4.0"
   }
 ]
