@@ -4,8 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "API_URL=http://localhost:8080/query next dev",
-    "build": "next build",
-    "start": "next start",
+    "build": "API_URL=http://localhost:8080/query next build",
+    "start": "API_URL=http://localhost:8080/query next start",
     "lint": "next lint"
   },
   "dependencies": {

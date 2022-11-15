@@ -7,11 +7,22 @@ export default async function Courses({
 }: {
   params: { school: string; course: string };
 }) {
-  const {} = await client.query({ query: GET_PROFESSORS, variables:{} });
+  const { data } = await client.query({
+    query: GET_PROFESSORS,
+    variables: {
+      courseId: params.course,
+      termInput: {
+        year: 2023,
+        semester: "SPRING",
+      },
+      professorAmount: 50,
+    },
+  });
 
+  const professors = data.course.taughtBy.professors;
   return (
     <>
-      <Table data={[]} />
+      <Table data={professors} />
     </>
   );
 }

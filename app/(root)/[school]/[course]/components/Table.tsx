@@ -21,8 +21,11 @@ import {
   ExpandedState,
   getFilteredRowModel,
 } from "@tanstack/react-table";
-import { Line, Radar } from "react-chartjs-2";
+
 import DebouncedInput from "../components/DebouncedInput";
+import ExpandedTableRowData from "./ExpandedTableRowData";
+import { ApolloProvider } from "@apollo/client";
+import { client } from "app/gql/client";
 
 export default function Table({ data }: { data: any[] }) {
   const [sorting, setSorting] = useState<SortingState>([]);
@@ -127,21 +130,21 @@ export default function Table({ data }: { data: any[] }) {
                     key={header.id}
                     colSpan={header.colSpan}
                     onClick={header.column.getToggleSortingHandler()}
-                    className={`h-12 items-center px-4 py-2 ${
+                    className={`h-16 items-center px-4 ${
                       header.column.getCanSort()
                         ? "cursor-pointer select-none"
                         : ""
                     }`}
                   >
                     {header.isPlaceholder ? null : (
-                      <div className="flex items-center gap-2">
+                      <div className="flex items-center">
                         {flexRender(
                           header.column.columnDef.header,
                           header.getContext()
                         )}
                         {{
-                          asc: <ChevronUpIcon className="h-6 w-6" />,
-                          desc: <ChevronDownIcon className="h-6 w-6" />,
+                          asc: <ChevronUpIcon className=" h-6 w-6" />,
+                          desc: <ChevronDownIcon className=" h-6 w-6" />,
                         }[header.column.getIsSorted() as string] ?? null}
                       </div>
                     )}
@@ -185,73 +188,9 @@ export default function Table({ data }: { data: any[] }) {
                     }`}
                   >
                     <td className="gap-6 p-6" colSpan={columns.length + 1}>
-                      <div className="flex flex-col items-center justify-around gap-8 sm:flex-row">
-                        <div className="grid h-64 w-64 place-items-center">
-                          <Radar
-                            options={{
-                              plugins: {
-                                legend: {
-                                  display: false,
-                                },
-                              },
-                              scales: {
-                                r: {
-                                  ticks: {
-                                    display: false,
-                                  },
-                                },
-                              },
-                            }}
-                            data={{
-                              labels: [
-                                "Eating",
-                                "Drinking",
-                                "Sleeping",
-                                "Designing",
-                                "Coding",
-                                "Cycling",
-                                "Running",
-                              ],
-                              datasets: [
-                                {
-                                  data: [65, 59, 90, 81, 56, 55, 40],
-                                  backgroundColor: "rgba(54, 162, 235, 0.2)",
-                                  borderColor: "rgb(54, 162, 235)",
-                                  pointBackgroundColor: "rgb(54, 162, 235)",
-                                  pointBorderColor: "#fff",
-                                  pointHoverBackgroundColor: "#fff",
-                                  pointHoverBorderColor: "rgb(54, 162, 235)",
-                                },
-                              ],
-                            }}
-                          />
-                        </div>
-                        <div className="grid h-64 w-96 place-items-center">
-                          <Line
-                            data={{
-                              labels: [
-                                "January",
-                                "February",
-                                "March",
-                                "April",
-                                "May",
-                                "June",
-                                "July",
-                                "August",
-                              ],
-                              datasets: [
-                                {
-                                  label: "Rating Over Time",
-                                  data: [65, 59, 80, 81, 56, 55, 40],
-                                  fill: false,
-                                  borderColor: "rgb(75, 192, 192)",
-                                  tension: 0.1,
-                                },
-                              ],
-                            }}
-                          />
-                        </div>
-                      </div>
+                      <ApolloProvider client={client}>
+                        <ExpandedTableRowData professorId={row.original.id} />
+                      </ApolloProvider>
                     </td>
                   </tr>
                 ) : null}
@@ -267,7 +206,7 @@ export default function Table({ data }: { data: any[] }) {
                     key={header.id}
                     colSpan={header.colSpan}
                     onClick={header.column.getToggleSortingHandler()}
-                    className={`h-12 items-center px-4 py-2  ${
+                    className={`h-12 items-center px-4 ${
                       header.column.getCanSort()
                         ? "cursor-pointer select-none"
                         : ""

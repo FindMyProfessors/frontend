@@ -1,3 +1,4 @@
+
 import Link from "next/link";
 import { client } from "app/gql/client";
 import { GET_COURSES } from "app/gql/queries";

@@ -41,7 +41,7 @@ export const GET_SCHOOLS = gql`
 `;
 
 export const GET_PROFESSORS = gql`
-  query GetProfessors(
+  query (
     $courseId: ID!
     $termInput: TermInput!
     $professorAmount: Int!
@@ -71,6 +71,24 @@ export const GET_PROFESSORS = gql`
           endCursor
         }
         totalCount
+      }
+    }
+  }
+`;
+
+export const GET_PROFESSOR_ANALYSIS = gql`
+  query ($professorId: ID!) {
+    professor(id: $professorId) {
+      analysis {
+        averageRatingValues {
+          year
+          month
+          value
+        }
+        tagAmount {
+          amount
+          tag
+        }
       }
     }
   }
