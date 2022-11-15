@@ -1,5 +1,4 @@
 "use client";
-import "chart.js/auto";
 import { Fragment } from "react";
 import { columns } from "../utils/columns";
 import { useState } from "react";
@@ -188,9 +187,9 @@ export default function Table({ data }: { data: any[] }) {
                     }`}
                   >
                     <td className="gap-6 p-6" colSpan={columns.length + 1}>
-                      <ApolloProvider client={client}>
-                        <ExpandedTableRowData professorId={row.original.id} />
-                      </ApolloProvider>
+                      <ExpandedTableRowData
+                        professorAnalysis={row.original.analysis}
+                      />
                     </td>
                   </tr>
                 ) : null}

@@ -1,44 +1,44 @@
 "use client";
 
-import { useQuery } from "@apollo/client";
-import { GET_PROFESSOR_ANALYSIS, GET_SCHOOLS } from "app/gql/queries";
-import { use } from "react";
 import { Line, Radar } from "react-chartjs-2";
+import "chart.js/auto";
 
-const getProfessorAnalysis = fetch("http://localhost:8080/", {
-  method: "POST",
-  headers: {
-    "Content-Type": "application/json",
-    "Access-Control-Allow-Origin": "*",
-  },
-  body: JSON.stringify({
-    query: GET_PROFESSOR_ANALYSIS,
-    variables: {
-      professorId: 5,
-    },
-  }),
-}).then((res) => res.json());
+const ExpandedTableRowData = ({
+  professorAnalysis,
+}: {
+  professorAnalysis: any;
+}) => {
+  console.log(professorAnalysis);
 
-const ExpandedTableRowData = ({ professorId }: { professorId: string }) => {
-  // const { data, error, loading } = useQuery(GET_SCHOOLS, {
+  function toTitleCase(str: string) {
+    return str.replaceAll("_", " ").replace(/\w\S*/g, function (txt) {
+      return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+    });
+  }
 
-  //   notifyOnNetworkStatusChange: true,
-  // });
+  const tabLabels = professorAnalysis.tagAmount
+    .sort((a, b) => (a.amount < b.amount ? 1 : -1))
+    .map((t) => toTitleCase(t.tag));
 
-  // if (loading) return <div>Loading...</div>;
+  const tagData = professorAnalysis.tagAmount
+    .sort((a, b) => (a.amount < b.amount ? 1 : -1))
+    .map((t) => t.amount);
 
-  // if (error) {
-  //   return <div>Hello</div>;
-  // }
+  const ratingDates = professorAnalysis.averageRatingValues
+    .sort((a, b) => (a.year > b.year ? 1 : -1))
+    .map((r) => `${r.year} ${r.month}`);
 
-  const data = use(getProfessorAnalysis);
-
+  const ratingData = professorAnalysis.averageRatingValues
+    .sort((a, b) => (a.year > b.year ? 1 : -1))
+    .map((r) => r.value);
   return (
     <div className="flex flex-col items-center justify-around gap-8 sm:flex-row">
-      {JSON.stringify(data)}
-      <div className="grid h-64 w-64 place-items-center">
+      <div>
         <Radar
+          width={500}
+          height={300}
           options={{
+            maintainAspectRatio: false,
             plugins: {
               legend: {
                 display: false,
@@ -53,18 +53,10 @@ const ExpandedTableRowData = ({ professorId }: { professorId: string }) => {
             },
           }}
           data={{
-            labels: [
-              "Eating",
-              "Drinking",
-              "Sleeping",
-              "Designing",
-              "Coding",
-              "Cycling",
-              "Running",
-            ],
+            labels: tabLabels.slice(0, 8),
             datasets: [
               {
-                data: [65, 59, 90, 81, 56, 55, 40],
+                data: tagData.slice(0, 8),
                 backgroundColor: "rgba(54, 162, 235, 0.2)",
                 borderColor: "rgb(54, 162, 235)",
                 pointBackgroundColor: "rgb(54, 162, 235)",
@@ -76,28 +68,28 @@ const ExpandedTableRowData = ({ professorId }: { professorId: string }) => {
           }}
         />
       </div>
-      <div className="grid h-64 w-96 place-items-center">
+      <div>
         <Line
           data={{
-            labels: [
-              "January",
-              "February",
-              "March",
-              "April",
-              "May",
-              "June",
-              "July",
-              "August",
-            ],
+            labels: ratingDates,
             datasets: [
               {
+                yAxisID: "y",
                 label: "Rating Over Time",
-                data: [65, 59, 80, 81, 56, 55, 40],
+                data: ratingData,
                 fill: false,
                 borderColor: "rgb(75, 192, 192)",
                 tension: 0.1,
               },
             ],
+          }}
+          options={{
+            scales: {
+              y: {
+                min: 0,
+                max: 5,
+              },
+            },
           }}
         />
       </div>
