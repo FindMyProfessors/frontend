@@ -1,6 +1,6 @@
 "use client";
 import "chart.js/auto";
-import React, { Fragment } from "react";
+import { Fragment } from "react";
 import { columns } from "../utils/columns";
 import { useState } from "react";
 import {

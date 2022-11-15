@@ -1,19 +1,41 @@
 "use client";
 
 import { useQuery } from "@apollo/client";
-import { GET_PROFESSOR_ANALYSIS } from "app/gql/queries";
+import { GET_PROFESSOR_ANALYSIS, GET_SCHOOLS } from "app/gql/queries";
+import { use } from "react";
 import { Line, Radar } from "react-chartjs-2";
 
-const ExpandedTableRowData = ({ professorId }: { professorId: string }) => {
-  const { data, loading, networkStatus } = useQuery(GET_PROFESSOR_ANALYSIS, {
-    variables: { professorId },
-  });
+const getProfessorAnalysis = fetch("http://localhost:8080/", {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json",
+    "Access-Control-Allow-Origin": "*",
+  },
+  body: JSON.stringify({
+    query: GET_PROFESSOR_ANALYSIS,
+    variables: {
+      professorId: 5,
+    },
+  }),
+}).then((res) => res.json());
 
-  console.log(data);
+const ExpandedTableRowData = ({ professorId }: { professorId: string }) => {
+  // const { data, error, loading } = useQuery(GET_SCHOOLS, {
+
+  //   notifyOnNetworkStatusChange: true,
+  // });
+
+  // if (loading) return <div>Loading...</div>;
+
+  // if (error) {
+  //   return <div>Hello</div>;
+  // }
+
+  const data = use(getProfessorAnalysis);
 
   return (
     <div className="flex flex-col items-center justify-around gap-8 sm:flex-row">
-      {loading ? "Loading" : "Done"}
+      {JSON.stringify(data)}
       <div className="grid h-64 w-64 place-items-center">
         <Radar
           options={{

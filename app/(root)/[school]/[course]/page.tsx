@@ -1,3 +1,4 @@
+import { ApolloClient, ApolloProvider } from "@apollo/client";
 import { client } from "app/gql/client";
 import { GET_PROFESSORS } from "app/gql/queries";
 import Table from "./components/Table";
