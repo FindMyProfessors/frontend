@@ -1,4 +1,3 @@
-
 import Link from "next/link";
 import { client } from "app/gql/client";
 import { GET_COURSES } from "app/gql/queries";
@@ -29,8 +28,10 @@ export default async function CourseSearch({
 
   let courses = data.school.courses.courses;
 
+  console.log(courses);
+
   return (
-    <div>
+    <div className="my-6">
       {courses.length ? (
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3">
           {courses.map((course: Course) => (
@@ -39,8 +40,10 @@ export default async function CourseSearch({
               key={course.id}
               href={`${params.school}/${course.id}`}
             >
-              <div className="text-lg font-semibold">{course.name}</div>
-              <div className="text-sm">{course.code}</div>
+              <div className="text-lg font-semibold leading-5">
+                {course.name}
+              </div>
+              <div className="mt-1 text-sm">{course.code}</div>
             </Link>
           ))}
         </div>

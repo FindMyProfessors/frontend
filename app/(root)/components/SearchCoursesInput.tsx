@@ -29,7 +29,11 @@ const SearchCoursesInput = ({
   return (
     <form onSubmit={handleSubmit} className={formStyles}>
       <select name="school" className={selectStyles}>
-        <option value="1">UCF</option>
+        {schools?.map((school) => (
+          <option key={school.id} value={school.id}>
+            {school.name}
+          </option>
+        ))}
       </select>
       <input
         name="course"

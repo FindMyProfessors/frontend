@@ -15,7 +15,22 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
-  Time: any;
+  RFC3339Time: any;
+};
+
+export enum Semester {
+  Fall = "FALL",
+  Spring = "SPRING",
+  Summer = "SUMMER",
+}
+
+export type TermInput = {
+  year: Scalars["Int"];
+  semester: Semester;
+};
+
+export type CourseFilter = {
+  startsWith?: Maybe<Scalars["String"]>;
 };
 
 export type School = {
@@ -28,7 +43,13 @@ export type School = {
   professors: ProfessorConnection;
 };
 
+export type SchoolCourseCodesArgs = {
+  term: TermInput;
+};
+
 export type SchoolCoursesArgs = {
+  term: TermInput;
+  filter?: Maybe<CourseFilter>;
   first?: Scalars["Int"];
   after?: Maybe<Scalars["String"]>;
 };
@@ -44,8 +65,8 @@ export type Professor = {
   firstName: Scalars["String"];
   lastName: Scalars["String"];
   linked: Scalars["Boolean"];
-  rating: Partial<Rating> | null;
-  analysis: ProfessorAnalysis;
+  rating?: Maybe<Rating>;
+  analysis?: Maybe<ProfessorAnalysis>;
   school: School;
   reviews: ReviewConnection;
   teaches: CourseConnection;
@@ -61,6 +82,7 @@ export type ProfessorReviewsArgs = {
 };
 
 export type ProfessorTeachesArgs = {
+  term: TermInput;
   first?: Scalars["Int"];
   after?: Maybe<Scalars["String"]>;
 };
@@ -84,7 +106,8 @@ export type TagAmount = {
 export type ChartValue = {
   __typename?: "ChartValue";
   value: Scalars["Float"];
-  date: Scalars["Time"];
+  month: Scalars["String"];
+  year: Scalars["Int"];
 };
 
 export type ProfessorAnalysis = {
@@ -103,6 +126,7 @@ export type Course = {
 };
 
 export type CourseTaughtByArgs = {
+  term: TermInput;
   first?: Scalars["Int"];
   after?: Maybe<Scalars["String"]>;
 };
@@ -154,6 +178,14 @@ export enum Tag {
   GradedByFewThings = "GRADED_BY_FEW_THINGS",
   AccessibleOutsideClass = "ACCESSIBLE_OUTSIDE_CLASS",
   OnlineSavvy = "ONLINE_SAVVY",
+  TestsAreTough = "TESTS_ARE_TOUGH",
+  TestHeavy = "TEST_HEAVY",
+  WouldTakeAgain = "WOULD_TAKE_AGAIN",
+  TestsNotMany = "TESTS_NOT_MANY",
+  SkipClassYouWontPass = "SKIP_CLASS_YOU_WONT_PASS",
+  CaresAboutStudents = "CARES_ABOUT_STUDENTS",
+  RespectedByStudents = "RESPECTED_BY_STUDENTS",
+  ExtraCreditOffered = "EXTRA_CREDIT_OFFERED",
 }
 
 export type Review = {
@@ -161,7 +193,7 @@ export type Review = {
   id: Scalars["ID"];
   quality: Scalars["Float"];
   difficulty: Scalars["Float"];
-  time: Scalars["Time"];
+  time: Scalars["RFC3339Time"];
   tags: Array<Tag>;
   grade: Grade;
 };
@@ -169,7 +201,7 @@ export type Review = {
 export type NewReview = {
   quality: Scalars["Float"];
   difficulty: Scalars["Float"];
-  time: Scalars["Time"];
+  time: Scalars["RFC3339Time"];
   tags: Array<Tag>;
   grade: Grade;
 };
@@ -182,13 +214,23 @@ export type NewProfessor = {
 
 export type Query = {
   __typename?: "Query";
+  professorByRMPId?: Maybe<Professor>;
   professor?: Maybe<Professor>;
+  course?: Maybe<Course>;
   school?: Maybe<School>;
   schools: SchoolConnection;
   professors: ProfessorConnection;
 };
 
+export type QueryProfessorByRmpIdArgs = {
+  rmpId: Scalars["String"];
+};
+
 export type QueryProfessorArgs = {
+  id: Scalars["ID"];
+};
+
+export type QueryCourseArgs = {
   id: Scalars["ID"];
 };
 
@@ -213,10 +255,11 @@ export type NewSchool = {
 
 export type Mutation = {
   __typename?: "Mutation";
-  createSchool: School;
+  createSchool?: Maybe<School>;
   createProfessor?: Maybe<Professor>;
   createCourse?: Maybe<Course>;
   createReview?: Maybe<Review>;
+  registerProfessorForCourse: Scalars["Boolean"];
   mergeProfessor?: Maybe<Professor>;
 };
 
@@ -239,6 +282,12 @@ export type MutationCreateReviewArgs = {
   input: NewReview;
 };
 
+export type MutationRegisterProfessorForCourseArgs = {
+  courseId: Scalars["ID"];
+  professorId: Scalars["ID"];
+  term: TermInput;
+};
+
 export type MutationMergeProfessorArgs = {
   schoolProfessorId: Scalars["ID"];
   rmpProfessorId: Scalars["ID"];
@@ -254,7 +303,6 @@ export type PageInfo = {
   __typename?: "PageInfo";
   startCursor: Scalars["String"];
   endCursor: Scalars["String"];
-  hasPreviousPage: Scalars["Boolean"];
   hasNextPage: Scalars["Boolean"];
 };
 

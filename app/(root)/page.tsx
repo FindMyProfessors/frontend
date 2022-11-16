@@ -10,10 +10,9 @@ const Home = async () => {
     id: s.id,
     name: s.name
       .split(" ")
-      .filter((s) => s[0] != s[0].toLowerCase())
+      .filter((s) => s[0] != s[0].toLowerCase()) // Filter uncapitalized words
       .map((s) => s[0]) // ["Univerity", "Central", "Florida"] => ["U", "C", "F"]
       .join("") // "UCF"
-      .toLowerCase(), // "ucf"
   }));
 
   return (

@@ -1,5 +1,6 @@
 import { client } from "app/gql/client";
 import { GET_PROFESSORS } from "app/gql/queries";
+import { Professor } from "app/types";
 import Table from "./components/Table";
 
 export default async function Courses({
@@ -7,7 +8,7 @@ export default async function Courses({
 }: {
   params: { school: string; course: string };
 }) {
-  const { data } = await client.query({
+  const { data, error } = await client.query({
     query: GET_PROFESSORS,
     variables: {
       courseId: params.course,
@@ -19,15 +20,11 @@ export default async function Courses({
     },
   });
 
+  if (error) return <div>An error has occured</div>;
 
-  const professors = data.course.taughtBy.professors;
-
-
-  return (
-    <>
-      <Table data={professors} />
-    </>
+  const professors = data.course.taughtBy?.professors.filter(
+    (p: Professor) => p.firstName != "Not"
   );
 
-  return <div>Hello</div>;
+  return <Table data={professors} />;
 }
