@@ -20,7 +20,7 @@ const Home = async () => {
         FIND MY PROFESSORS
       </div>
       <div className="text-lg sm:text-xl lg:text-2xl">
-        A better way to search for classes
+        A better way to search for professors
       </div>
       <SearchCoursesInput
         formStyles="mx-auto mt-8 flex w-[400px] text-sm sm:w-[500px] sm:text-base lg:w-[550px] lg:text-lg"

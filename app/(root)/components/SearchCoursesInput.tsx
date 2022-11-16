@@ -38,7 +38,7 @@ const SearchCoursesInput = ({
       <input
         name="course"
         className={inputStyles}
-        placeholder="Course name"
+        placeholder="Course code"
         type="text"
       />
     </form>

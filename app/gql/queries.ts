@@ -87,20 +87,5 @@ export const GET_PROFESSORS = gql`
   }
 `;
 
-// export const GET_PROFESSOR_ANALYSIS = gql`
-//   query ($professorId: ID!) {
-//     professor(id: $professorId) {
-//       analysis {
-//         averageRatingValues {
-//           year
-//           month
-//           value
-//         }
-//         tagAmount {
-//           amount
-//           tag
-//         }
-//       }
-//     }
-//   }
-// `;
+
+
