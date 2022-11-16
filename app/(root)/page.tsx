@@ -4,15 +4,14 @@ import { School } from "app/types";
 import SearchCoursesInput from "./components/SearchCoursesInput";
 
 const Home = async () => {
-  const { data } = await client.query({ query: GET_SCHOOLS });
-
-  const schools = data.schools.schools.map((s: School) => ({
+  const { data: schoolsData } = await client.query({ query: GET_SCHOOLS });
+  const schools = schoolsData.schools.schools.map((s: School) => ({
     id: s.id,
     name: s.name
       .split(" ")
       .filter((s) => s[0] != s[0].toLowerCase()) // Filter uncapitalized words
       .map((s) => s[0]) // ["Univerity", "Central", "Florida"] => ["U", "C", "F"]
-      .join("") // "UCF"
+      .join(""), // "UCF"
   }));
 
   return (
@@ -20,7 +19,7 @@ const Home = async () => {
       <div className="whitespace-nowrap py-1.5 text-4xl font-extrabold sm:text-5xl lg:text-6xl">
         FIND MY PROFESSORS
       </div>
-      <div className="text-lg text-gray-600 sm:text-xl lg:text-2xl">
+      <div className="text-lg sm:text-xl lg:text-2xl">
         A better way to search for classes
       </div>
       <SearchCoursesInput

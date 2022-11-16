@@ -23,7 +23,6 @@ import {
 
 import DebouncedInput from "../components/DebouncedInput";
 import ExpandedTableRowData from "./ExpandedTableRowData";
-import { isNumber } from "util";
 
 export default function Table({ data }: { data: any[] }) {
   const [sorting, setSorting] = useState<SortingState>([]);
@@ -55,9 +54,7 @@ export default function Table({ data }: { data: any[] }) {
         placeholder="Search by all columns"
       />
       {!table.getRowModel().rows.length ? (
-        <div className="mt-4">
-          Your search did not match any results
-        </div>
+        <div className="mt-4">Your search did not match any results</div>
       ) : (
         <>
           <div className="mb-2 mt-4 flex items-center gap-4">

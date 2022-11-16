@@ -1,7 +1,7 @@
-import Link from "next/link";
 import { client } from "app/gql/client";
 import { GET_COURSES } from "app/gql/queries";
 import { Course } from "app/types";
+import Link from "next/link";
 
 export default async function CourseSearch({
   searchParams,
@@ -26,17 +26,15 @@ export default async function CourseSearch({
     },
   });
 
-  let courses = data.school.courses.courses;
-
-  console.log(courses);
+  let courses: Course[] = data.school.courses.courses;
 
   return (
     <div className="my-6">
       {courses.length ? (
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3">
-          {courses.map((course: Course) => (
+        <div className="grid auto-rows-fr grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3">
+          {courses.map((course) => (
             <Link
-              className="rounded bg-gray-100 p-4"
+              className="grid place-content-center rounded border bg-gray-100 p-4 text-center shadow"
               key={course.id}
               href={`${params.school}/${course.id}`}
             >
