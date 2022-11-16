@@ -2,6 +2,7 @@ import { client } from "app/gql/client";
 import { GET_COURSES } from "app/gql/queries";
 import { Course } from "app/types";
 import Link from "next/link";
+import { redirect } from "next/navigation";
 
 export default async function CourseSearch({
   searchParams,
@@ -27,6 +28,10 @@ export default async function CourseSearch({
   });
 
   let courses: Course[] = data.school.courses.courses;
+
+  if (courses.length === 1) {
+    await redirect(`${params.school}/${courses[0].id}`);
+  }
 
   return (
     <div className="my-6">
