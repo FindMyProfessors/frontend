@@ -1,8 +1,8 @@
 "use client";
 
+import { Maybe, ProfessorAnalysis } from "app/types";
 import "chart.js/auto";
 import { Line, Radar } from "react-chartjs-2";
-import { Maybe, ProfessorAnalysis } from "app/types";
 import { capitalizeWord } from "../utils/functions";
 
 const ExpandedTableRowData = ({
@@ -24,7 +24,6 @@ const ExpandedTableRowData = ({
     "November",
     "December",
   ];
-
 
   if (
     !professorAnalysis ||
@@ -59,8 +58,8 @@ const ExpandedTableRowData = ({
   const ratingDates = professorAnalysis?.averageRatingValues
     ?.sort(
       (a, b) =>
-        new Date(a.year, months.indexOf(a.month)).getMilliseconds() -
-        new Date(b.year, months.indexOf(b.month)).getMilliseconds()
+        new Date(a.year, months.indexOf(a.month)).valueOf() -
+        new Date(b.year, months.indexOf(b.month)).valueOf()
     )
     .map((r) => `'${r.year.toString().slice(-2)} ${r.month.slice(0, 3)}`);
 
