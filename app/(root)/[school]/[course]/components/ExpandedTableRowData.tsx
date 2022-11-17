@@ -40,7 +40,7 @@ const ExpandedTableRowData = ({
     return str
       .split("_")
       .map((s) => {
-        const prepositions = ["OF", "TO", "BY"];
+        const prepositions = ["OF", "TO", "BY", "ARE"];
         if (prepositions.includes(s)) return s.toLowerCase();
         return capitalizeWord(s);
       })
