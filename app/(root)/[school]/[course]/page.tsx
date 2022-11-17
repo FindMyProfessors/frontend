@@ -30,7 +30,7 @@ export default async function Courses({
   return (
     <>
       <SetTitle title="Professors" />
-      <Table data={professors} />;
+      <Table data={professors} />
     </>
   );
 }
