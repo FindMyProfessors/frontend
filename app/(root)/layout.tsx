@@ -1,8 +1,8 @@
 import { inter } from "app/font";
 import "app/globals.css";
 import { client } from "app/gql/client";
-import { getAllCourses, GET_SCHOOLS } from "app/gql/queries";
-import { School } from "app/types";
+import { GET_COURSES, GET_SCHOOLS } from "app/gql/queries";
+import { Course, School } from "app/types";
 import { Navbar } from "./components/Navbar";
 
 export default async function RootLayout({
@@ -11,6 +11,17 @@ export default async function RootLayout({
   children: React.ReactNode;
 }) {
   const { data } = await client.query({ query: GET_SCHOOLS });
+  const { data: coursesData } = await client.query({
+    query: GET_COURSES,
+    variables: {
+      schoolId: 1,
+      input: {
+        year: 2023,
+        semester: "SPRING",
+      },
+      first: 3200,
+    },
+  });
 
   const schools = data.schools.schools.map((s: School) => ({
     id: s.id,
@@ -21,6 +32,8 @@ export default async function RootLayout({
       .join(""), // "UCF"
   }));
 
+  let courses: Course[] = coursesData.school.courses.courses;
+
   return (
     <html lang="en" className={inter.className}>
       <head>
@@ -29,8 +42,10 @@ export default async function RootLayout({
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       </head>
       <body className="flex min-h-screen flex-col">
-        <Navbar schools={schools} />
-        <div className="mx-auto w-full max-w-screen-lg pt-3">{children}</div>
+        <Navbar schools={schools} courses={courses} />
+        <div className="mx-auto w-full max-w-screen-lg px-4 pt-3">
+          {children}
+        </div>
       </body>
     </html>
   );

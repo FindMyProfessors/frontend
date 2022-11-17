@@ -1,5 +1,4 @@
 "use client";
-import courses from "app/gql/courses.json";
 import { Course } from "app/types";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -7,8 +6,10 @@ import SearchCoursesInput from "./SearchCoursesInput";
 
 export const Navbar = ({
   schools,
+  courses,
 }: {
-  schools?: { id: number; name: string }[];
+  schools: { id: number; name: string }[];
+  courses: Course[];
 }) => {
   const path = usePathname();
 
@@ -23,9 +24,11 @@ export const Navbar = ({
       {path != "/" ? (
         <SearchCoursesInput
           schools={schools}
+          courses={courses}
           formStyles="flex relative"
           selectStyles="rounded-l border-y border-l bg-gray-100 p-2 outline-none ring-blue-500 focus:z-10 focus:ring-2"
           inputStyles="rounded-r border border-y border-r px-3 py-2 outline-none ring-blue-500 focus:z-10 focus:ring-2"
+          optionStyles="absolute w-full rounded border bg-white py-2 top-12 text-center"
         />
       ) : null}
       <div className="flex items-center">

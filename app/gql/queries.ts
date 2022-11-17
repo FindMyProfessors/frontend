@@ -8,11 +8,12 @@ export const GET_COURSES = gql`
     $input: TermInput!
     $after: String
     $searchQuery: String
+    $first: Int = 50
   ) {
     school(id: $schoolId) {
       courses(
         term: $input
-        first: 50
+        first: $first
         after: $after
         filter: { startsWith: $searchQuery }
       ) {
@@ -89,30 +90,30 @@ export const GET_PROFESSORS = gql`
   }
 `;
 
-export const getAllCourses = async () => {
-  let allCourses: Course[] = [];
-  let hasNextPage = true;
-  let endCursor;
+// export const getAllCourses = async () => {
+//   let allCourses: Course[] = [];
+//   let hasNextPage = true;
+//   let endCursor;
 
 
-  while (hasNextPage) {
-    const { data } = (await client.query({
-      query: GET_COURSES,
-      variables: {
-        schoolId: "1",
-        input: {
-          semester: "SPRING",
-          year: 2023,
-        },
-        after: endCursor,
-      },
-    })) as { data: any };
+//   while (hasNextPage) {
+//     const { data } = (await client.query({
+//       query: GET_COURSES,
+//       variables: {
+//         schoolId: "1",
+//         input: {
+//           semester: "SPRING",
+//           year: 2023,
+//         },
+//         after: endCursor,
+//       },
+//     })) as { data: any };
 
-    let courses: Course[] = data.school.courses.courses;
-    allCourses = [...allCourses, ...courses];
-    hasNextPage = data.school.courses.pageInfo.hasNextPage;
-    if (hasNextPage) endCursor = data.school.courses.pageInfo.endCursor;
-  }
+//     let courses: Course[] = data.school.courses.courses;
+//     allCourses = [...allCourses, ...courses];
+//     hasNextPage = data.school.courses.pageInfo.hasNextPage;
+//     if (hasNextPage) endCursor = data.school.courses.pageInfo.endCursor;
+//   }
 
-  return allCourses;
-};
+//   return allCourses;
+// };

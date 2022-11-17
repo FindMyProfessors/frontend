@@ -30,7 +30,7 @@ export default async function CourseSearch({
   let courses: Course[] = data.school.courses.courses;
 
   if (courses.length === 1) {
-    await redirect(`${params.school}/${courses[0].id}`);
+    return await redirect(`${params.school}/${courses[0].id}`);
   }
 
   return (
