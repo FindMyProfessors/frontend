@@ -27,7 +27,6 @@ const Home = async () => {
   }));
 
   let courses: Course[] = coursesData.school.courses.courses;
-  console.log(courses);
   return (
     <div className="mx-auto flex max-w-screen-sm flex-col py-40 text-center">
       <div className="whitespace-nowrap py-1.5 text-4xl font-extrabold sm:text-5xl lg:text-6xl">

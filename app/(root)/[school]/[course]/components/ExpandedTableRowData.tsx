@@ -25,7 +25,6 @@ const ExpandedTableRowData = ({
     "December",
   ];
 
-  console.log(professorAnalysis);
 
   if (
     !professorAnalysis ||

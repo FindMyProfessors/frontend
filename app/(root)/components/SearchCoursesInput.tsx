@@ -90,7 +90,6 @@ const SearchCoursesInput = ({
           </Combobox.Option>
           {filteredCourses.slice(0, 5).map((c) => (
             <Combobox.Option
-              // className="cursor-pointer py-2 hover:bg-blue-50 active:bg-blue-50"
               className={({ active }) =>
                 `relative cursor-default select-none py-2 pl-10 pr-4 ${
                   active ? "bg-blue-50" : null
