@@ -1,3 +1,4 @@
+import SetTitle from "app/(root)/components/SetTitle";
 import { client } from "app/gql/client";
 import { GET_PROFESSORS } from "app/gql/queries";
 import { Professor } from "app/types";
@@ -26,5 +27,10 @@ export default async function Courses({
     (p: Professor) => p.firstName != "Not"
   );
 
-  return <Table data={professors} />;
+  return (
+    <>
+      <SetTitle title="Professors" />
+      <Table data={professors} />;
+    </>
+  );
 }

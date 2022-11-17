@@ -3,6 +3,7 @@ import { GET_COURSES } from "app/gql/queries";
 import { Course } from "app/types";
 import Link from "next/link";
 import { redirect } from "next/navigation";
+import SetTitle from "../components/SetTitle";
 
 export default async function CourseSearch({
   searchParams,
@@ -34,25 +35,28 @@ export default async function CourseSearch({
   }
 
   return (
-    <div className="my-6">
-      {courses.length ? (
-        <div className="grid auto-rows-fr grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3">
-          {courses.map((course) => (
-            <Link
-              className="grid place-content-center rounded border bg-gray-100 p-4 text-center shadow"
-              key={course.id}
-              href={`${params.school}/${course.id}`}
-            >
-              <div className="text-lg font-semibold leading-5">
-                {course.name}
-              </div>
-              <div className="mt-1 text-sm">{course.code}</div>
-            </Link>
-          ))}
-        </div>
-      ) : (
-        <div>Your search did not match any courses in our system</div>
-      )}
-    </div>
+    <>
+      <SetTitle title="Search" />
+      <div className="my-6">
+        {courses.length ? (
+          <div className="grid auto-rows-fr grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3">
+            {courses.map((course) => (
+              <Link
+                className="grid place-content-center rounded border bg-gray-100 p-4 text-center shadow"
+                key={course.id}
+                href={`${params.school}/${course.id}`}
+              >
+                <div className="text-lg font-semibold leading-5">
+                  {course.name}
+                </div>
+                <div className="mt-1 text-sm">{course.code}</div>
+              </Link>
+            ))}
+          </div>
+        ) : (
+          <div>Your search did not match any courses in our system</div>
+        )}
+      </div>
+    </>
   );
 }
