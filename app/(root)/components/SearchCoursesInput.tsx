@@ -1,6 +1,7 @@
 "use client";
 
 import { Combobox } from "@headlessui/react";
+import { MagnifyingGlassIcon } from "@heroicons/react/20/solid";
 import { Course } from "app/types";
 import { useRouter } from "next/navigation";
 import { FormEvent, useState } from "react";
@@ -12,6 +13,8 @@ const SearchCoursesInput = ({
   selectStyles,
   inputStyles,
   optionStyles,
+  buttonStyles,
+  iconStyles,
 }: {
   schools: { id: number; name: string }[];
   courses: Course[];
@@ -19,6 +22,8 @@ const SearchCoursesInput = ({
   selectStyles: string;
   inputStyles: string;
   optionStyles: string;
+  buttonStyles: string;
+  iconStyles: string;
 }) => {
   const [selectedCourse, setSelectedCourse] = useState<Course | null>(null);
   const [selectedSchool, setSelectedSchool] = useState(
@@ -38,46 +43,13 @@ const SearchCoursesInput = ({
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    console.log(selectedCourse);
-    console.log(selectedSchool);
-
-    // const data = Object.fromEntries(new FormData(e.target as HTMLFormElement));
-
     if (courses.find((c) => c.id === selectedCourse?.id)) {
       router.push(`/${selectedSchool}/${selectedCourse?.id}`);
       return;
     }
 
-    router.push(`/${selectedSchool}?=${selectedCourse?.name ?? ""}`);
-
-    // console.log(data["course[code]"]);
-    // if (courseCodes.includes((data["course[code]"] as string).toLowerCase())) {
-    //   router.push(`/${data.school}/${data["course[id]"]}`);
-    //   return;
-    // }
-
-    // router.push(
-    //   `/${data.school}?q=${(data["course[code]"] as string).toLowerCase()}`
-    // );
+    router.push(`/${selectedSchool}?q=${selectedCourse?.name ?? ""}`);
   };
-
-  // return (
-  //   <form onSubmit={handleSubmit} className={formStyles}>
-  //     <select name="school" className={selectStyles}>
-  //       {schools?.map((school) => (
-  //         <option key={school.id} value={school.id}>
-  //           {school.name}
-  //         </option>
-  //       ))}
-  //     </select>
-  //     <input
-  //       name="course"
-  //       className={inputStyles}
-  //       placeholder="Course code"
-  //       type="text"
-  //     />
-  //   </form>
-  // );
 
   return (
     <form className={formStyles} onSubmit={handleSubmit}>
@@ -104,32 +76,37 @@ const SearchCoursesInput = ({
           onChange={(e) => setQuery(e.target.value)}
           displayValue={(c: Course) => c?.code}
         />
+
         <Combobox.Options className={optionStyles}>
-          {!filteredCourses.length && query
-            ? query.length > 0 && (
-                <Combobox.Option
-                  className="cursor-pointer py-2 hover:bg-blue-50"
-                  value={{ id: null, name: query }}
-                >
-                  Create &#34;{query}&#34;
-                </Combobox.Option>
-              )
-            : filteredCourses.slice(0, 5).map((c) => (
-                <Combobox.Option
-                  // className="cursor-pointer py-2 hover:bg-blue-50 active:bg-blue-50"
-                  className={({ active }) =>
-                    `relative cursor-default select-none py-2 pl-10 pr-4 ${
-                      active ? "bg-blue-50" : null
-                    }`
-                  }
-                  key={c.code}
-                  value={c}
-                >
-                  {c.code}
-                </Combobox.Option>
-              ))}
+          <Combobox.Option
+            className={({ active }) =>
+              `relative cursor-default select-none py-2 pl-10 pr-4 ${
+                active ? "bg-blue-50" : null
+              }`
+            }
+            value={{ id: null, name: query, code: query }}
+          >
+            Search &#34;{query}&#34;
+          </Combobox.Option>
+          {filteredCourses.slice(0, 5).map((c) => (
+            <Combobox.Option
+              // className="cursor-pointer py-2 hover:bg-blue-50 active:bg-blue-50"
+              className={({ active }) =>
+                `relative cursor-default select-none py-2 pl-10 pr-4 ${
+                  active ? "bg-blue-50" : null
+                }`
+              }
+              key={c.code}
+              value={c}
+            >
+              {c.code}
+            </Combobox.Option>
+          ))}
         </Combobox.Options>
       </Combobox>
+      <button className={buttonStyles}>
+        <MagnifyingGlassIcon className={iconStyles} />
+      </button>
     </form>
   );
 };

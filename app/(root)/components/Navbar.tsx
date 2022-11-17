@@ -27,8 +27,10 @@ export const Navbar = ({
           courses={courses}
           formStyles="flex relative"
           selectStyles="rounded-l border-y border-l bg-gray-100 p-2 outline-none ring-blue-500 focus:z-10 focus:ring-2"
-          inputStyles="rounded-r border border-y border-r px-3 py-2 outline-none ring-blue-500 focus:z-10 focus:ring-2"
+          inputStyles="border-y px-3 py-2 outline-none ring-blue-500 focus:z-10 focus:ring-2"
           optionStyles="absolute w-full rounded border bg-white py-2 top-12 text-center"
+          buttonStyles="grid place-content-center rounded-r border bg-gray-100 px-2"
+          iconStyles="h-5 w-5 text-gray-500"
         />
       ) : null}
       <div className="flex items-center">

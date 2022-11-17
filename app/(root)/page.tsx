@@ -39,8 +39,10 @@ const Home = async () => {
       <SearchCoursesInput
         formStyles="mx-auto mt-8 flex w-[400px] text-sm sm:w-[500px] sm:text-base lg:w-[550px] lg:text-lg relative"
         selectStyles="rounded-l border bg-gray-100 p-3 outline-none ring-blue-500 focus:z-10 focus:ring-2"
-        inputStyles="w-0 flex-1 rounded-r border-y border-r px-3.5 py-3 outline-none ring-blue-500 focus:z-10 focus:ring-2 w-full"
+        inputStyles="w-0 flex-1 border-y px-3.5 py-3 outline-none ring-blue-500 focus:z-10 focus:ring-2 w-full"
         optionStyles="absolute w-full rounded border bg-white py-2 top-16"
+        buttonStyles="grid place-content-center rounded-r border bg-gray-100 px-4"
+        iconStyles="h-7 w-7 text-gray-500"
         schools={schools}
         courses={courses}
       />
