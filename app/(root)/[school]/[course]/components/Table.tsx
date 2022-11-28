@@ -1,7 +1,4 @@
 "use client";
-import { Fragment } from "react";
-import { columns } from "../utils/columns";
-import { useState } from "react";
 import {
   ChevronDoubleLeftIcon,
   ChevronDoubleRightIcon,
@@ -11,15 +8,17 @@ import {
   ChevronUpIcon,
 } from "@heroicons/react/20/solid";
 import {
-  useReactTable,
-  getCoreRowModel,
-  SortingState,
-  flexRender,
-  getSortedRowModel,
-  getPaginationRowModel,
   ExpandedState,
+  flexRender,
+  getCoreRowModel,
   getFilteredRowModel,
+  getPaginationRowModel,
+  getSortedRowModel,
+  SortingState,
+  useReactTable,
 } from "@tanstack/react-table";
+import { Fragment, useState } from "react";
+import { columns } from "../utils/columns";
 
 import DebouncedInput from "../components/DebouncedInput";
 import ExpandedTableRowData from "./ExpandedTableRowData";
@@ -37,6 +36,14 @@ export default function Table({ data }: { data: any[] }) {
       expanded,
       globalFilter,
     },
+    globalFilterFn: (row, columnId, filterValue: string) => {
+      const search = filterValue.toLowerCase();
+
+      let value = row.getValue(columnId) as string;
+      if (typeof value === "number") value = String(value);
+
+      return value?.toLowerCase().includes(search);
+    },
     onSortingChange: setSorting,
     onExpandedChange: setExpanded,
     getCoreRowModel: getCoreRowModel(),
@@ -49,8 +56,8 @@ export default function Table({ data }: { data: any[] }) {
     <>
       <DebouncedInput
         className="mt-16 rounded border px-4 py-2 outline-none ring-blue-500 focus:z-10 focus:ring-2"
-        value={globalFilter}
-        onChange={(value) => setGlobalFilter(value)}
+        value={globalFilter ?? ""}
+        onChange={(value) => setGlobalFilter(String(value))}
         placeholder="Search by all columns"
       />
       {!table.getRowModel().rows.length ? (
